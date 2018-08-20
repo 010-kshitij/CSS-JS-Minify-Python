@@ -17,18 +17,19 @@ url_slash_pattern = "^//"
 min_js_pattern = ".min.js$"
 min_css_pattern = ".min.css$"
 
-## Process Section
-# Getting Source
+## Process Section Steps:
+
+# Step 1 (Getting Source)
 result = requests.get(url)
 
-# Parsing Source
+# Step 2 (Parsing Source)
 soup = BeautifulSoup(result.content, 'html.parser')
 
-# Getting JS Links
+# Step 3 (Getting JS Links)
 print "Getting JS Links"
 scripts = soup.find_all('script') 
 
-# Minifying each unminified JS Script
+# Step 4 (Minifying each unminified JS Script)
 for script in scripts:
 	src = script.get('src')
 	if src:
@@ -52,10 +53,11 @@ for script in scripts:
 		
 print "JS minify Done"
 
-# Getting CSS Stylesheets Links
+# Step 5 (Getting CSS Stylesheets Links)
 print "Getting CSS Links"
 links = soup.find_all("link")
-# Minifying each unminified CSS Stylesheet.
+
+# Step 6 (Minifying each unminified CSS Stylesheet)
 for link in links:
 	if link.get('rel')[0] == "stylesheet":
 		href = link.get('href')
