@@ -1,25 +1,34 @@
+## Import Section
 from bs4 import BeautifulSoup
 import requests
 import re
 import os
 import jsmin
 
-url = "" # URL to enter
-result = requests.get(url)
+## Declaration Section
+url = "" # URL to enter, example (http://www.google.com)
 
 js_minify_link = "https://closure-compiler.appspot.com/compile"
 css_minify_link = "https://cssminifier.com/raw"
 
-#All RegEx Patterns
+# All RegEx Patterns
 url_pattern = "^(http|https)://"
 url_slash_pattern = "^//"
 min_js_pattern = ".min.js$"
 min_css_pattern = ".min.css$"
 
+## Process Section
+# Getting Source
+result = requests.get(url)
+
+# Parsing Source
 soup = BeautifulSoup(result.content, 'html.parser')
+
+# Getting JS Links
 print "Getting JS Links"
 scripts = soup.find_all('script') 
 
+# Minifying each unminified JS Script
 for script in scripts:
 	src = script.get('src')
 	if src:
@@ -43,8 +52,10 @@ for script in scripts:
 		
 print "JS minify Done"
 
+# Getting CSS Stylesheets Links
 print "Getting CSS Links"
 links = soup.find_all("link")
+# Minifying each unminified CSS Stylesheet.
 for link in links:
 	if link.get('rel')[0] == "stylesheet":
 		href = link.get('href')
